@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  # Database container.
+  db:
+    image: mariadb:latest
+    container_name: db
+    hostname: db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./app-settings/mysql-conf/overrides.cnf:/etc/mysql/conf.d/overrides.cnf
+      - ./app-settings/mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - internal
+
+  # App itself.
+  app:
+    image: ... # Use your Dockerized app image.
+    container_name: app
+    hostname: app
+    depends_on:
+      - db
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - internal
+      - external
+    volumes:
+      - app-code:/var/www/html
+      - app-data:/var/www/html/files
+      - ./app.log:/var/log/syslog
+
+
+# There are 2 networks: external and internal.
+networks:
+  external:
+    driver: bridge
+  internal:
+    driver: bridge
+
+# Some volumes just exist as they are, others are mapped to localhost folders.
+volumes:
+  app-code:
+  app-data:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: $PWD/app-data
+  db-data:
+

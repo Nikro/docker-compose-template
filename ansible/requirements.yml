@@ -1,0 +1,11 @@
+---
+roles:
+  # Install the docker role from the galaxy.
+  - geerlingguy.docker
+
+collections:
+  # Install the OS / SSH hardening roles.
+  - devsec.hardening
+  # Community goodies (docker-compose one of them)
+  - community.docker
+  - community.general

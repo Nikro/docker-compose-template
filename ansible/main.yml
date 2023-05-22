@@ -1,0 +1,75 @@
+- hosts: localhost
+  connection: local
+  become: true
+  collections:
+    - devsec.hardening
+  roles:
+    - devsec.hardening.os_hardening
+    - devsec.hardening.ssh_hardening
+    - geerlingguy.docker
+  vars:
+    ssh_allow_agent_forwarding: true
+    ssh_server_permit_environment_vars: 'yes'
+    sysctl_overwrite:
+      # Enable IPv4 traffic forwarding.
+      net.ipv4.ip_forward: 1
+
+# Later, you can do random things that you might need on your host, like starting up Docker containers,
+# or install or set-up some other libraries or executables that you might need.
+- name: Install and configure Nginx as reverse proxy
+  hosts: localhost
+  connection: local
+  become: true
+  tasks:
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: present
+
+    - name: Copy Nginx configuration file to sites-enabled
+      hosts: your_nginx_host
+      become: true
+      tasks:
+        - name: Copy Nginx configuration file
+          copy:
+            src: "../host/nginx/proxy_example.conf"
+            dest: "/etc/nginx/sites-enabled/"
+            owner: root
+            group: root
+            mode: "0644"
+
+    - name: Create placeholders folder
+      file:
+        path: /var/www/placeholders
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Copy placeholder.html file
+      copy:
+        src: "../host/nginx/placeholder.html"
+        dest: "/var/www/placeholders/placeholder.html"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Allow HTTP traffic through UFW
+      ufw:
+        rule: allow
+        port: "80"
+        proto: "tcp"
+
+    - name: Allow HTTPS traffic through UFW
+      ufw:
+        rule: allow
+        port: "443"
+        proto: "tcp"
+
+    - name: Enable UFW
+      command: ufw --force enable
+
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted

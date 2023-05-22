@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  letsencrypt-cloudflare:
+    image: certbot/dns-cloudflare
+
+    # I usually on-comment one that I need and run: docker compose up :)
+    # Just make sure you have the right credentials in credentials file.
+    # Again, I followed: https://www.nodinrogers.com/post/2022-03-10-certbot-cloudflare-docker/
+    # On the server, create a folder ./certificates/cloudflare and in that folder create the credentials file.
+    # Follow the tutorial and then docker compose up :)
+
+    # Dry Run
+    #command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos -d domain.com --server https://acme-v02.api.letsencrypt.org/directory --dry-run
+
+    # Issue certificate
+    # command: certonly --non-interactive --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --email email@domain.com -d domain.com  --server https://acme-v02.api.letsencrypt.org/directory
+
+    # Renew certificate
+    #command: renew --non-interactive --no-self-upgrade --dns-cloudflare --dns-cloudflare-credentials /opt/cloudflare/credentials --agree-tos --email email@domain.com --server https://acme-v02.api.letsencrypt.org/directory
+
+    volumes:
+      - ./cloudflare:/opt/cloudflare
+      - ./letsencrypt:/etc/letsencrypt
+      - ./letsencrypt/log:/var/log/letsencrypt
+
