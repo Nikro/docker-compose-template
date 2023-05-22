@@ -12,7 +12,6 @@ services:
     volumes:
       - db-data:/var/lib/mysql
       - ./app-settings/mysql-conf/overrides.cnf:/etc/mysql/conf.d/overrides.cnf
-      - ./app-settings/mysql-init:/docker-entrypoint-initdb.d
     networks:
       - internal
 
