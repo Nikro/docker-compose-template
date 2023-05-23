@@ -2,10 +2,10 @@ version: "3"
 
 services:
   # Database container.
-  db:
+  mariadb:
     image: mariadb:latest
-    container_name: db
-    hostname: db
+    container_name: mariadb
+    hostname: mariadb
     command: --default-authentication-plugin=mysql_native_password
     restart: unless-stopped
     env_file: .env
@@ -17,13 +17,17 @@ services:
 
   # App itself.
   app:
-    image: ... # Use your Dockerized app image.
+    image: ghcr.io/nikro/docker-compose-template-app:main # Use your Dockerized app image.
     container_name: app
     hostname: app
     depends_on:
-      - db
+      - mariadb
     restart: unless-stopped
     env_file: .env
+    ports:
+      - 8081:8080
+    environment:
+      MARIADB_HOST: mariadb
     networks:
       - internal
       - external
@@ -31,7 +35,6 @@ services:
       - app-code:/var/www/html
       - app-data:/var/www/html/files
       - ./app.log:/var/log/syslog
-
 
 # There are 2 networks: external and internal.
 networks:
