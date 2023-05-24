@@ -45,5 +45,14 @@ There's a dedicated docker-compose under **/certificates/** folder.
 I know, it goes against ansible but I don't have time to figure out how to do it properly.
 
 1. Go to New Relic > Logs (you can pick Linux)
-2. Run the command, something like: curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY=*** NEW_RELIC_ACCOUNT_ID=*** NEW_RELIC_REGION=EU /usr/local/bin/newrelic install
+2. Run the command, something like: 
+
+`curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY=*** NEW_RELIC_ACCOUNT_ID=*** NEW_RELIC_REGION=EU /usr/local/bin/newrelic install`
+
 3. Now under /etc/newrelic-infra/logging.d/ - you can copy the files you need.
+
+## Troubleshooting
+
+1. Make sure you run the ansible from the root of the project.
+2. Make sure you have the .env file in place.
+3. Make sure you have the domain name in place (or use `server_name _;` and delete /etc/nginx/sites-enabled/default).
