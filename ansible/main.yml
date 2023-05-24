@@ -16,8 +16,7 @@
 
 # Later, you can do random things that you might need on your host, like starting up Docker containers,
 # or install or set-up some other libraries or executables that you might need.
-- name: Install and configure Nginx as reverse proxy
-  hosts: localhost
+- hosts: localhost
   connection: local
   become: true
   tasks:
