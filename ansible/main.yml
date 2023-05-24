@@ -62,6 +62,12 @@
         port: "443"
         proto: "tcp"
 
+    - name: Allow SSH traffic through UFW
+      ufw:
+        rule: allow
+        port: "22"
+        proto: "ssh"
+
     - name: Enable UFW
       command: ufw --force enable
 
