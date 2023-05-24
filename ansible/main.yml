@@ -28,7 +28,7 @@
 
     - name: Copy Nginx configuration file to sites-enabled
       copy:
-        src: "../host-settings/nginx/proxy_example.conf"
+        src: "./host-settings/nginx/proxy_example.conf"
         dest: "/etc/nginx/sites-enabled/"
         owner: root
         group: root
@@ -44,7 +44,7 @@
 
     - name: Copy placeholder.html file
       copy:
-        src: "../host-settings/nginx/placeholder.html"
+        src: "./host-settings/nginx/placeholder.html"
         dest: "/var/www/placeholders/placeholder.html"
         owner: root
         group: root
