@@ -32,7 +32,7 @@
       tasks:
         - name: Copy Nginx configuration file
           copy:
-            src: "../host/nginx/proxy_example.conf"
+            src: "../host-settings/nginx/proxy_example.conf"
             dest: "/etc/nginx/sites-enabled/"
             owner: root
             group: root
@@ -48,7 +48,7 @@
 
     - name: Copy placeholder.html file
       copy:
-        src: "../host/nginx/placeholder.html"
+        src: "../host-settings/nginx/placeholder.html"
         dest: "/var/www/placeholders/placeholder.html"
         owner: root
         group: root
