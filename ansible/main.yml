@@ -37,38 +37,38 @@
             group: root
             mode: "0644"
 
-    - name: Create placeholders folder
-      file:
-        path: /var/www/placeholders
-        state: directory
-        owner: root
-        group: root
-        mode: "0755"
+        - name: Create placeholders folder
+          file:
+            path: /var/www/placeholders
+            state: directory
+            owner: root
+            group: root
+            mode: "0755"
 
-    - name: Copy placeholder.html file
-      copy:
-        src: "../host-settings/nginx/placeholder.html"
-        dest: "/var/www/placeholders/placeholder.html"
-        owner: root
-        group: root
-        mode: "0644"
+        - name: Copy placeholder.html file
+          copy:
+            src: "../host-settings/nginx/placeholder.html"
+            dest: "/var/www/placeholders/placeholder.html"
+            owner: root
+            group: root
+            mode: "0644"
 
-    - name: Allow HTTP traffic through UFW
-      ufw:
-        rule: allow
-        port: "80"
-        proto: "tcp"
+        - name: Allow HTTP traffic through UFW
+          ufw:
+            rule: allow
+            port: "80"
+            proto: "tcp"
 
-    - name: Allow HTTPS traffic through UFW
-      ufw:
-        rule: allow
-        port: "443"
-        proto: "tcp"
+        - name: Allow HTTPS traffic through UFW
+          ufw:
+            rule: allow
+            port: "443"
+            proto: "tcp"
 
-    - name: Enable UFW
-      command: ufw --force enable
+        - name: Enable UFW
+          command: ufw --force enable
 
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
+        - name: Restart Nginx
+          service:
+            name: nginx
+            state: restarted
